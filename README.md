@@ -36,3 +36,17 @@ En la sección de Anexos hay un gif explicando como podría funcionar la aplicac
 ![Alt text](Dise%C3%B1o_sin_t%C3%ADtulo.gif)
 
 ## Solución
+### Cálculo de conversión
+```
+// 1 moneda1 = C moneda2
+// X moneda1 -> Y moneda2
+Y = X * C
+
+// Y moneda2 -> X moneda1
+X = Y / C
+```
+
+### UML Diagram
+
+![Alt text](UML/JustAnotherONEConversor.png)
+
