@@ -3,23 +3,18 @@ package com.github.saulmmbp.main.conversion;
 import com.github.saulmmbp.main.conversion.types.*;
 import com.github.saulmmbp.main.dataaccess.DataAccess;
 
-/**
- * Conversor de Divisas
- * @author SAUL MALAGON MARTINEZ
- *
- */
-public class CurrencyConversor implements Conversor {
-    
-    private DataAccess dataAccess;
+public class LengthConversor implements Conversor {
 
-    public CurrencyConversor() {
+    private DataAccess dataAccess;
+    
+    public LengthConversor() {
         this.dataAccess = new DataAccess();
     }
     
     @Override
     public float convert(float cantidad, Convertible from, Convertible to) {
-        String searchString1 = ((Currency) from).name() + "_" + ((Currency) to).name();
-        String searchString2 = ((Currency) to).name() + "_" + ((Currency) from).name();
+        String searchString1 = ((Length) from).name() + "_" + ((Length) to).name();
+        String searchString2 = ((Length) to).name() + "_" + ((Length) from).name();
         
         if(dataAccess.containsKey(searchString1)) {
             return cantidad * dataAccess.findByKey(searchString1);
@@ -28,5 +23,7 @@ public class CurrencyConversor implements Conversor {
         } else {
             return cantidad;
         }
+        
     }
+
 }

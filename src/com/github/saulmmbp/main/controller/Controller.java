@@ -11,8 +11,9 @@ import com.github.saulmmbp.main.conversion.types.*;
  */
 public class Controller {
     
-    private static Conversor currencyConversor;
-    private static Conversor TemperatureConversor;
+    private Conversor currencyConversor;
+    private Conversor temperatureConversor;
+    private Conversor lengthConversor;
     
     public Controller() {
         init();
@@ -22,8 +23,9 @@ public class Controller {
      * Inicializa conversores
      */
     public void init() {
-        currencyConversor = new CurrencyConversor();
-        TemperatureConversor = new TemperatureConversor();
+        this.currencyConversor = new CurrencyConversor();
+        this.temperatureConversor = new TemperatureConversor();
+        this.lengthConversor = new LengthConversor();
     }
 
     /**
@@ -33,13 +35,12 @@ public class Controller {
      * @param to
      * @return
      */
-    public String convert(float value, Convertible from, Convertible to) {
-        float conversion = 0.0f;
-        if(from instanceof Currency) {
-             conversion = currencyConversor.convert(value, from, to);
-        } else if( from instanceof Temperature) {
-            conversion = TemperatureConversor.convert(value, from, to);
-        }
+    public String convert(float value, Convertible from, Convertible to, ConversionType conversionType) {
+        float conversion = switch(conversionType) {
+            case CURRENCY -> currencyConversor.convert(value, from, to);
+            case TEMPERATURE -> temperatureConversor.convert(value, from, to);
+            case LENGTH -> lengthConversor.convert(value, from, to);
+        };
         
         return String.valueOf(conversion);
     }

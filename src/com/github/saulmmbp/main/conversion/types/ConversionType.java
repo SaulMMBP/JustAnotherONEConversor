@@ -8,7 +8,8 @@ package com.github.saulmmbp.main.conversion.types;
 public enum ConversionType {
 
     CURRENCY,
-    TEMPERATURE;
+    TEMPERATURE,
+    LENGTH;
 
     @Override
     public String toString() {
