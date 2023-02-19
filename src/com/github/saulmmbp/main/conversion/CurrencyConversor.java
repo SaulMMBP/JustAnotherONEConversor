@@ -1,87 +1,89 @@
 package com.github.saulmmbp.main.conversion;
 
+import java.io.*;
+import java.util.Properties;
+
+import com.github.saulmmbp.main.conversion.types.*;
+
 /**
- * Clase que contiene la utilidad de conversión de divisas
- * @author SAUL
+ * Conversor de Divisas
+ * @author SAUL MALAGON MARTINEZ
  *
  */
-public class ConversorDivisas {
-
-    private static final float DOLAR_PESO = 18.361f;
-    private static final float DOLAR_YEN_JAPONES = 134.11f;
-    private static final float DOLAR_WON_SURCOREANO = 1295.9f;
-
-    private static final float EURO_PESO = 19.685f;
-    private static final float EURO_DOLAR = 1.0721f;
-    private static final float EURO_YEN_JAPONES = 143.78f;
-    private static final float EURO_WON_SURCOREANO = 1389.1f;
-
-    private static final float LIBRA_ESTERLINA_PESO = 22.105f;
-    private static final float LIBRA_ESTERLINA_DOLAR = 1.2039f;
-    private static final float LIBRA_ESTERLINA_EURO = 1.1229f;
-    private static final float LIBRA_ESTERLINA_YEN_JAPONES = 161.45f;
-    private static final float LIBRA_ESTERLINA_WON_SURCOREANO = 1560.0f;
-
-    private static final float PESO_YEN_JAPONES = 7.3043f;
-    private static final float PESO_WON_SURCOREANO = 70.574f;
-
-    private static final float YEN_JAPONES_WON_SURCOREANO = 9.6612f;
+public class CurrencyConversor implements Conversor {
     
-    /**
-     * Convierte la cantidad ingresada de <<from>> a <<to>>
-     * @param cantidad
-     * @param from Divisa ingresada
-     * @param to Divisa resultante
-     * @return Cantidad convertida a la divisa <<to>>
-     */
-    public static float convert(float cantidad, Divisa from, Divisa to) {
-        return switch (from) {
-            case PESO -> switch (to) {
+    private Properties properties;
+
+    public CurrencyConversor() {
+        this.properties = new Properties();
+        try {
+            properties.load(new FileInputStream(new File("conversion.properties")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private float conversion(float cantidad, Currency from, Currency to) {
+        String searchString1 = from.name() + "_" + to.name();
+        String searchString2 = to.name() + "_" + from.name();
+        if(properties.containsKey(searchString1)) {
+            return cantidad * Float.parseFloat(properties.getProperty(searchString1));
+        } else {
+            return cantidad / Float.parseFloat(properties.getProperty(searchString2));
+        }
+    }
+    
+    @Override
+    public float convert(float cantidad, Convertible from, Convertible to) {
+        Currency localFrom = (Currency) from;
+        Currency localTo = (Currency) to;
+        return switch (localFrom) {
+            case PESO -> switch (localTo) {
                 case PESO -> cantidad;
-                case DOLAR -> cantidad / DOLAR_PESO;
-                case EURO -> cantidad / EURO_PESO;
-                case LIBRA_ESTERLINA -> cantidad / LIBRA_ESTERLINA_PESO;
-                case YEN_JAPONES -> cantidad * PESO_YEN_JAPONES;
-                case WON_SURCOREANO -> cantidad * PESO_WON_SURCOREANO;
+                case DOLAR -> conversion(cantidad, localFrom, localTo);
+                case EURO -> conversion(cantidad, localFrom, localTo);
+                case LIBRA_ESTERLINA -> conversion(cantidad, localFrom, localTo);
+                case YEN_JAPONES -> conversion(cantidad, localFrom, localTo);
+                case WON_SURCOREANO -> conversion(cantidad, localFrom, localTo);
             };
-            case DOLAR -> switch (to) {
-                case PESO -> cantidad * DOLAR_PESO;
+            case DOLAR -> switch (localTo) {
+                case PESO -> conversion(cantidad, localFrom, localTo);
                 case DOLAR -> cantidad;
-                case EURO -> cantidad / EURO_DOLAR;
-                case LIBRA_ESTERLINA -> cantidad / LIBRA_ESTERLINA_DOLAR;
-                case YEN_JAPONES -> cantidad * DOLAR_YEN_JAPONES;
-                case WON_SURCOREANO -> cantidad * DOLAR_WON_SURCOREANO;
+                case EURO -> conversion(cantidad, localFrom, localTo);
+                case LIBRA_ESTERLINA -> conversion(cantidad, localFrom, localTo);
+                case YEN_JAPONES -> conversion(cantidad, localFrom, localTo);
+                case WON_SURCOREANO -> conversion(cantidad, localFrom, localTo);
             };
-            case EURO -> switch (to) {
-                case PESO -> cantidad * EURO_PESO;
-                case DOLAR -> cantidad * EURO_DOLAR;
+            case EURO -> switch (localTo) {
+                case PESO -> conversion(cantidad, localFrom, localTo);
+                case DOLAR -> conversion(cantidad, localFrom, localTo);
                 case EURO -> cantidad;
-                case LIBRA_ESTERLINA -> cantidad / LIBRA_ESTERLINA_EURO;
-                case YEN_JAPONES -> cantidad * EURO_YEN_JAPONES;
-                case WON_SURCOREANO -> cantidad * EURO_WON_SURCOREANO;
+                case LIBRA_ESTERLINA -> conversion(cantidad, localFrom, localTo);
+                case YEN_JAPONES -> conversion(cantidad, localFrom, localTo);
+                case WON_SURCOREANO -> conversion(cantidad, localFrom, localTo);
             };
-            case LIBRA_ESTERLINA -> switch (to) {
-                case PESO -> cantidad * LIBRA_ESTERLINA_PESO;
-                case DOLAR -> cantidad * LIBRA_ESTERLINA_DOLAR;
-                case EURO -> cantidad * LIBRA_ESTERLINA_EURO;
+            case LIBRA_ESTERLINA -> switch (localTo) {
+                case PESO -> conversion(cantidad, localFrom, localTo);
+                case DOLAR -> conversion(cantidad, localFrom, localTo);
+                case EURO -> conversion(cantidad, localFrom, localTo);
                 case LIBRA_ESTERLINA -> cantidad;
-                case YEN_JAPONES -> cantidad * LIBRA_ESTERLINA_YEN_JAPONES;
-                case WON_SURCOREANO -> cantidad * LIBRA_ESTERLINA_WON_SURCOREANO;
+                case YEN_JAPONES -> conversion(cantidad, localFrom, localTo);
+                case WON_SURCOREANO -> conversion(cantidad, localFrom, localTo);
             };
-            case YEN_JAPONES -> switch (to) {
-                case PESO -> cantidad / PESO_YEN_JAPONES;
-                case DOLAR -> cantidad / DOLAR_YEN_JAPONES;
-                case EURO -> cantidad / EURO_YEN_JAPONES;
-                case LIBRA_ESTERLINA -> cantidad / LIBRA_ESTERLINA_YEN_JAPONES;
+            case YEN_JAPONES -> switch (localTo) {
+                case PESO -> conversion(cantidad, localFrom, localTo);
+                case DOLAR -> conversion(cantidad, localFrom, localTo);
+                case EURO -> conversion(cantidad, localFrom, localTo);
+                case LIBRA_ESTERLINA -> conversion(cantidad, localFrom, localTo);
                 case YEN_JAPONES -> cantidad;
-                case WON_SURCOREANO -> cantidad * YEN_JAPONES_WON_SURCOREANO;
+                case WON_SURCOREANO -> conversion(cantidad, localFrom, localTo);
             };
-            case WON_SURCOREANO -> switch (to) {
-                case PESO -> cantidad / PESO_WON_SURCOREANO;
-                case DOLAR -> cantidad / DOLAR_WON_SURCOREANO;
-                case EURO -> cantidad / EURO_WON_SURCOREANO;
-                case LIBRA_ESTERLINA -> cantidad / LIBRA_ESTERLINA_WON_SURCOREANO;
-                case YEN_JAPONES -> cantidad / YEN_JAPONES_WON_SURCOREANO;
+            case WON_SURCOREANO -> switch (localTo) {
+                case PESO -> conversion(cantidad, localFrom, localTo);
+                case DOLAR -> conversion(cantidad, localFrom, localTo);
+                case EURO -> conversion(cantidad, localFrom, localTo);
+                case LIBRA_ESTERLINA -> conversion(cantidad, localFrom, localTo);
+                case YEN_JAPONES -> conversion(cantidad, localFrom, localTo);
                 case WON_SURCOREANO -> cantidad;
             };
         };
