@@ -8,5 +8,12 @@ package com.github.saulmmbp.main.conversion.types;
 public enum ConversionType {
 
     CURRENCY,
-    TEMPERATURE
+    TEMPERATURE;
+
+    @Override
+    public String toString() {
+        return super.toString().charAt(0) + super.toString().substring(1).toLowerCase();
+    }
+    
+    
 }
