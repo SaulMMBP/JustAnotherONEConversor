@@ -1,6 +1,11 @@
-package com.github.saulmmbp.main.conversion;
+package com.github.saulmmbp.main.conversion.types;
 
-public enum Divisa {
+/**
+ * Divisas
+ * @author SAUL MALAGON MARTINEZ
+ *
+ */
+public enum Currency implements Convertible{
     
     PESO, 
     DOLAR, 
