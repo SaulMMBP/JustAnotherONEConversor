@@ -48,5 +48,18 @@ X = Y / C
 
 ### UML Diagram
 
-![Alt text](UML/JustAnotherONEConversor.png)
+![UML](UML/JustAnotherONEConversor.png)
 
+### Interface gráfica
+![interfaz light](conversorLight.png)
+![interfaz dark](conversorDark.png)
+
+## ¿Cómo ejecutar el programa?
+1. El programa está realizado con java 17, por lo que hay que asegurarse de tener dicha versión instalada. 
+2. Descargar el JAR ejecutable
+[Descargar Zip](https://github.com/SaulMMBP/JustAnotherONEConversor/releases/download/v1.0.0/Conversor_de_moneda_-_ChallengeONE_java.zip)
+3. Descomprimir el zip que contiene dos archivos, conversor.properties y jaoc.jar
+4. Asegurarse que conversor.properties y jaoc.jar se encuentren en la misma carpeta
+5. Ejecutar jaoc.jar (Doble click)
+
+**Nota**: El archivo conversor.properties contiene el importe de cada moneda por lo que se pueden modificar para ajustarse a los precios actuales. Por ejemplo, el campo DOLAR_PESO contiene el valor del dolar en pesos mexicanos.
